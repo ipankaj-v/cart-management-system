@@ -7,7 +7,7 @@
                 @if(auth()->user()->isAdmin())
                     <a href="{{ route('admin.dashboard') }}">Admin</a>
                 @else
-                    <a href="{{ route('cart.index') }}">Cart</a>
+                    <a href="{{ route('cart.index') }}">Cart <span data-cart-count>{{ auth()->user()->cart ? '('.auth()->user()->cart->items()->sum('quantity').')' : '' }}</span></a>
                     <a href="{{ route('orders.index') }}">My Orders</a>
                 @endif
                 <form method="POST" action="{{ route('logout') }}">

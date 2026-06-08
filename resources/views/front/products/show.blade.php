@@ -16,7 +16,7 @@
                 <p class="muted">{{ $product->stock }} in stock</p>
                 @auth
                     @unless(auth()->user()->isAdmin())
-                        <form class="row" method="POST" action="{{ route('cart.store', $product) }}">
+                        <form class="row" method="POST" action="{{ route('cart.store', $product) }}" data-ajax-cart>
                             @csrf
                             <input style="max-width: 110px;" type="number" name="quantity" value="1" min="1" max="{{ max($product->stock, 1) }}">
                             <button class="btn" type="submit" @disabled($product->stock < 1)>Add to Cart</button>

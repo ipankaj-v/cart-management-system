@@ -5,36 +5,36 @@
 @section('content')
     <h1>Cart</h1>
     <div class="panel">
-        <table>
+        <table data-cart-table>
             <tr><th>Product</th><th>Price</th><th>Quantity</th><th>Total</th><th></th></tr>
             @forelse($cart->items as $item)
-                <tr>
+                <tr data-cart-row="{{ $item->id }}">
                     <td>{{ $item->product->name }}</td>
                     <td>₹{{ number_format($item->product->price, 2) }}</td>
                     <td>
-                        <form class="row" method="POST" action="{{ route('cart.update', $item) }}">
+                        <form class="row" method="POST" action="{{ route('cart.update', $item) }}" data-ajax-cart>
                             @csrf @method('PUT')
                             <input style="max-width: 100px;" type="number" name="quantity" value="{{ $item->quantity }}" min="1" max="{{ $item->product->stock }}">
                             <button class="btn secondary" type="submit">Update</button>
                         </form>
                     </td>
-                    <td>₹{{ number_format($item->quantity * $item->product->price, 2) }}</td>
+                    <td data-line-total>₹{{ number_format($item->quantity * $item->product->price, 2) }}</td>
                     <td>
-                        <form method="POST" action="{{ route('cart.destroy', $item) }}">
+                        <form method="POST" action="{{ route('cart.destroy', $item) }}" data-ajax-cart>
                             @csrf @method('DELETE')
                             <button class="btn danger" type="submit">Remove</button>
                         </form>
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="5">Your cart is empty.</td></tr>
+                <tr data-empty-cart><td colspan="5">Your cart is empty.</td></tr>
             @endforelse
             @if($cart->items->isNotEmpty())
-                <tr><th colspan="3">Total</th><th colspan="2">₹{{ number_format($cart->total(), 2) }}</th></tr>
+                <tr data-cart-total-row><th colspan="3">Total</th><th colspan="2">₹<span data-cart-total>{{ number_format($cart->total(), 2) }}</span></th></tr>
             @endif
         </table>
         @if($cart->items->isNotEmpty())
-            <div class="row" style="justify-content: flex-end; margin-top: 16px;">
+            <div class="row" data-checkout-link style="justify-content: flex-end; margin-top: 16px;">
                 <a class="btn" href="{{ route('checkout.show') }}">Checkout</a>
             </div>
         @endif

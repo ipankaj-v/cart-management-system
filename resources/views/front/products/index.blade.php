@@ -28,7 +28,7 @@
                     <a class="btn secondary" href="{{ route('products.show', $product) }}">View</a>
                     @auth
                         @unless(auth()->user()->isAdmin())
-                            <form method="POST" action="{{ route('cart.store', $product) }}">
+                            <form method="POST" action="{{ route('cart.store', $product) }}" data-ajax-cart>
                                 @csrf
                                 <input type="hidden" name="quantity" value="1">
                                 <button class="btn" type="submit" @disabled($product->stock < 1)>Add</button>
